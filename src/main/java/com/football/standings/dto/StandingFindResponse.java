@@ -2,6 +2,11 @@ package com.football.standings.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class StandingFindResponse {
 
 	@JsonProperty("Country ID & Name")
@@ -16,37 +21,5 @@ public class StandingFindResponse {
 	@JsonProperty("Overall League Position")
 	String overallLeaguePosition;
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getLeague() {
-		return league;
-	}
-
-	public void setLeague(String league) {
-		this.league = league;
-	}
-
-	public String getTeam() {
-		return team;
-	}
-
-	public void setTeam(String team) {
-		this.team = team;
-	}
-
-	public String getOverallLeaguePosition() {
-		return overallLeaguePosition;
-	}
-
-	public void setOverallLeaguePosition(String overallLeaguePosition) {
-		this.overallLeaguePosition = overallLeaguePosition;
-	}
-	
 	
 }

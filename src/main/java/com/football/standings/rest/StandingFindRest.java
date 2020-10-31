@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.football.standings.dto.StandingFindResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/football/standings/")
+@Slf4j
 public class StandingFindRest {
 
 	@Autowired
@@ -20,6 +23,7 @@ public class StandingFindRest {
 	
 	@GetMapping
 	public List<StandingFindResponse> get(@RequestParam Map<String, String> searchParams) {
+		log.info(">>>getStandingsBy", searchParams);
 		return standingFindService.findStandings(searchParams);
 	}
 }

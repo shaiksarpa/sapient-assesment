@@ -2,7 +2,6 @@ package com.football.standings.client;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.football.standings.dto.CountryApiDto;
 import com.football.standings.dto.StandingApiDto;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Component
+@Slf4j
 public class FootBallApiClient {
 	
 	@Autowired
@@ -34,6 +36,7 @@ public class FootBallApiClient {
 	public List<StandingApiDto> getLeagueStandings() {
 		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(api)
 				.queryParam("action", "get_standings").queryParam("league_id", leagueId).queryParam("APIkey", apiKey);
+		log.info(">>>getLeagueStandings({})",uriComponentsBuilder.toUriString());
 		ResponseEntity<StandingApiDto[]> responseEntity = restTemplate.getForEntity(uriComponentsBuilder.toUriString(), StandingApiDto[].class);
 		if(responseEntity.hasBody() && responseEntity.getStatusCodeValue() == 200) {
 			return Arrays.asList(responseEntity.getBody());
@@ -44,6 +47,7 @@ public class FootBallApiClient {
 	public List<CountryApiDto> getCountries() {
 		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(api)
 				.queryParam("action", "get_countries").queryParam("APIkey", apiKey);
+		log.info(">>>getCountries({})",uriComponentsBuilder.toUriString());
 		ResponseEntity<CountryApiDto[]> responseEntity = restTemplate.getForEntity(uriComponentsBuilder.toUriString(), CountryApiDto[].class);
 		if(responseEntity.hasBody() && responseEntity.getStatusCodeValue() == 200) {
 			return Arrays.asList(responseEntity.getBody());

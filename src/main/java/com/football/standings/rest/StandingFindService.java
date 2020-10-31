@@ -19,7 +19,10 @@ import com.football.standings.dto.CountryApiDto;
 import com.football.standings.dto.StandingApiDto;
 import com.football.standings.dto.StandingFindResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class StandingFindService {
 	
 	@Autowired
@@ -31,12 +34,15 @@ public class StandingFindService {
 	
 	@PostConstruct
 	public void getCountries() {
+		log.info(">>>loading the countries starts here...");
 		if(CollectionUtils.isEmpty(countries)) {
 			countries = footBallApiClient.getCountries();
 		}
+		log.info("<<<loading the countries ends here...", countries);
 	}
 	
 	public String findCountryByName(String countryName) {
+		log.info(">>>findCountryByName({})", countryName);
 		if(!CollectionUtils.isEmpty(countries)) {
 			Optional<CountryApiDto> optional = countries.stream().filter(c-> c.getCountryName().equalsIgnoreCase(countryName)).findFirst();
 			if(optional.isPresent()) {
@@ -47,10 +53,14 @@ public class StandingFindService {
 	}
 	
 	public List<StandingFindResponse> findStandings(Map<String, String> filter) {
+		log.info(">>>findStandings({})", filter);
 		List<StandingFindResponse> response = new ArrayList<>();
 		String country = filter.get("country");
 		String team = filter.get("team");
 		String league = filter.get("league");
+		if(StringUtils.isEmpty(country) && StringUtils.isEmpty(team) && StringUtils.isEmpty(league)) {
+			throw new RuntimeException("Invalid input");
+		}
 		List<StandingApiDto> leagueStandings = footBallApiClient.getLeagueStandings();
 		if(!CollectionUtils.isEmpty(leagueStandings)) {
 			List<StandingApiDto> filteredList = leagueStandings.stream().filter(filterPredicate(country, team, league)).collect(Collectors.toList());
@@ -65,6 +75,7 @@ public class StandingFindService {
 				}
 			}
 		}
+		log.info("<<<findStandings({})", filter, response);
 		return response;
 	}
 	
