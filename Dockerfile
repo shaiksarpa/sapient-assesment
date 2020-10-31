@@ -1,4 +1,4 @@
-FROM maven:3-jdk-11
+FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
